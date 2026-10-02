@@ -1,0 +1,3514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Virus Escape — Survival Game</title>
+
+<style>
+*{
+    box-sizing:border-box
+}
+
+body{
+    margin:0;
+    font-family:Inter,system-ui,Arial,sans-serif;
+    background:#030806;
+    color:#fff
+}
+
+button{
+    font:inherit
+}
+
+#app{
+    min-height:100vh;
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #1d5b3e 0,
+            #0a1c14 42%,
+            #020504 100%
+        );
+    padding:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+
+.card{
+    width:min(920px,100%);
+    background:#08130fee;
+    border:1px solid #5cff9a2e;
+    border-radius:30px;
+    padding:26px;
+    box-shadow:0 30px 100px #000c;
+    text-align:center
+}
+
+.screen{
+    display:none
+}
+
+.screen.active{
+    display:block
+}
+
+.intro{
+    padding:14px 8px 4px
+}
+
+.intro .logo{
+    font-size:64px;
+    line-height:1;
+    margin-bottom:8px;
+    filter:drop-shadow(0 0 18px #5cff9a66)
+}
+
+.intro h1{
+    font-size:50px;
+    margin:0;
+    letter-spacing:-2px
+}
+
+.tagline{
+    color:#a9c0b2;
+    font-size:17px;
+    margin:10px auto 22px;
+    max-width:650px
+}
+
+.objective{
+    background:linear-gradient(
+        135deg,
+        #17c96418,
+        #56dfff0c
+    );
+    border:1px solid #5cff9a28;
+    border-radius:20px;
+    padding:16px;
+    margin:18px 0;
+    text-align:left
+}
+
+.objective b{
+    color:#5cff9a
+}
+
+.how{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    text-align:left;
+    margin:18px 0
+}
+
+.howCard{
+    background:linear-gradient(
+        145deg,
+        #ffffff0a,
+        #ffffff04
+    );
+    border:1px solid #ffffff14;
+    border-radius:18px;
+    padding:16px;
+    min-height:88px
+}
+
+.howCard .icon{
+    font-size:28px;
+    float:left;
+    margin-right:12px
+}
+
+.howCard b{
+    display:block;
+    font-size:15px;
+    margin-bottom:4px
+}
+
+.howCard span{
+    color:#91a99b;
+    font-size:13px;
+    line-height:1.45
+}
+
+.introStart,
+.leaderBtn{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    padding:15px;
+    font-size:17px;
+    font-weight:950;
+    color:#fff;
+    background:linear-gradient(
+        135deg,
+        #17c964,
+        #00a878
+    );
+    box-shadow:0 12px 32px #17c96433;
+    cursor:pointer;
+    transition:.2s
+}
+
+.introStart:hover,
+.leaderBtn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08)
+}
+
+.leaderBtn{
+    margin-top:10px;
+    background:#ffffff0a;
+    border:1px solid #ffffff18;
+    box-shadow:none
+}
+
+.leaderboard{
+    margin-top:18px;
+    background:#ffffff06;
+    border:1px solid #ffffff12;
+    border-radius:20px;
+    padding:16px;
+    text-align:left
+}
+
+.leaderboard h2{
+    margin:0 0 12px;
+    font-size:20px
+}
+
+.rank{
+    display:grid;
+    grid-template-columns:42px 1fr auto;
+    gap:10px;
+    padding:10px 4px;
+    border-bottom:1px solid #ffffff0b
+}
+
+.rank:last-child{
+    border-bottom:0
+}
+
+.rank strong{
+    color:#ffd34d
+}
+
+.rank span{
+    color:#9eb5a6
+}
+
+.gameHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:6px
+}
+
+.badge{
+    padding:7px 12px;
+    border-radius:999px;
+    background:#5cff9a12;
+    border:1px solid #5cff9a25;
+    color:#5cff9a;
+    font-size:11px;
+    font-weight:950;
+    letter-spacing:.12em
+}
+
+.gameTitle{
+    text-align:left
+}
+
+.gameTitle h1{
+    margin:0;
+    font-size:40px;
+    letter-spacing:-1px
+}
+
+.sub{
+    margin:3px 0 15px;
+    color:#91a99b;
+    text-align:left
+}
+
+.top{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:14px
+}
+
+.pill{
+    background:linear-gradient(
+        145deg,
+        #ffffff0b,
+        #ffffff05
+    );
+    border:1px solid #ffffff14;
+    border-radius:15px;
+    padding:10px 12px;
+    font-weight:900
+}
+
+.pill span{
+    display:block;
+    color:#718b7c;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    margin-bottom:3px
+}
+
+.pill b{
+    font-size:18px
+}
+
+.arena{
+    height:470px;
+    position:relative;
+    border-radius:22px;
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #0c2117,
+            #030a07 75%
+        );
+    border:1px solid #5cff9a20;
+    overflow:hidden;
+    box-shadow:inset 0 0 50px #0008
+}
+
+.arena:before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+        linear-gradient(
+            #5cff9a08 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            #5cff9a08 1px,
+            transparent 1px
+        );
+    background-size:42px 42px;
+    pointer-events:none
+}
+
+.message{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:#b4cabe;
+    font-weight:900;
+    font-size:21px;
+    white-space:pre-line;
+    z-index:20;
+    background:#02080555
+}
+
+.player{
+    position:absolute;
+    width:30px;
+    height:30px;
+    border-radius:9px;
+    background:#5cff9a;
+    box-shadow:0 0 24px #5cff9aaa;
+    z-index:10;
+    display:none
+}
+
+.player:after{
+    content:'🧑';
+    font-size:20px;
+    position:absolute;
+    left:4px;
+    top:2px
+}
+
+.shield{
+    position:absolute;
+    width:48px;
+    height:48px;
+    border:3px solid #56dfff;
+    border-radius:50%;
+    box-shadow:0 0 25px #56dfff99;
+    display:none;
+    z-index:9
+}
+
+.virus{
+    position:absolute;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#ff426f;
+    box-shadow:0 0 22px #ff426f99;
+    display:none;
+    z-index:8
+}
+
+.virus:after{
+    content:'☠';
+    font-size:20px;
+    position:absolute;
+    left:7px;
+    top:4px
+}
+
+.coin{
+    position:absolute;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#ffd34d;
+    box-shadow:0 0 20px #ffd34d99;
+    display:none;
+    z-index:7
+}
+
+.coin:after{
+    content:'$';
+    color:#513f00;
+    font-weight:950;
+    position:absolute;
+    left:8px;
+    top:2px
+}
+
+.power{
+    position:absolute;
+    width:28px;
+    height:28px;
+    border-radius:8px;
+    background:#9b6cff;
+    box-shadow:0 0 25px #9b6cffbb;
+    display:none;
+    z-index:7
+}
+
+.power:after{
+    content:'⚡';
+    font-size:18px;
+    position:absolute;
+    left:4px;
+    top:3px
+}
+
+.boss{
+    position:absolute;
+    width:70px;
+    height:70px;
+    border-radius:20px;
+    background:#ff7a18;
+    box-shadow:0 0 35px #ff7a18bb;
+    display:none;
+    z-index:8
+}
+
+.boss:after{
+    content:'👹';
+    font-size:42px;
+    position:absolute;
+    left:12px;
+    top:10px
+}
+
+.bar{
+    height:10px;
+    background:#ffffff0d;
+    border-radius:99px;
+    margin:14px 0 10px;
+    overflow:hidden;
+    border:1px solid #ffffff08
+}
+
+.fill{
+    height:100%;
+    width:100%;
+    background:linear-gradient(
+        90deg,
+        #17c964,
+        #56dfff
+    );
+    transition:width .1s linear
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:10px;
+    margin-top:12px
+}
+
+.controls button{
+    border:0;
+    border-radius:14px;
+    padding:13px;
+    font-size:15px;
+    font-weight:900;
+    color:#fff;
+    background:#ffffff0b;
+    border:1px solid #ffffff15;
+    cursor:pointer;
+    transition:.2s
+}
+
+.controls button:hover{
+    background:#ffffff14;
+    transform:translateY(-1px)
+}
+
+.controls button.primary{
+    background:linear-gradient(
+        135deg,
+        #17c964,
+        #00a878
+    );
+    box-shadow:0 10px 28px #17c96433
+}
+
+.result{
+    font-size:16px;
+    font-weight:900;
+    min-height:22px;
+    margin:5px
+}
+
+.back{
+    margin-top:10px;
+    width:100%
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:#020604cc;
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100
+}
+
+.overlay.show{
+    display:flex
+}
+
+.modal{
+    width:min(500px,100%);
+    background:#0b1711;
+    border:1px solid #5cff9a35;
+    border-radius:26px;
+    padding:28px;
+    box-shadow:0 30px 100px #000e;
+    text-align:center
+}
+
+.modal .big{
+    font-size:58px;
+    margin-bottom:6px
+}
+
+.modal h2{
+    font-size:32px;
+    margin:5px 0 8px
+}
+
+.modal p{
+    color:#9eb5a6;
+    margin:8px 0 20px;
+    line-height:1.5
+}
+
+.modalStats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:18px
+}
+
+.modalStat{
+    background:#ffffff08;
+    border-radius:14px;
+    padding:12px
+}
+
+.modalStat small{
+    display:block;
+    color:#718b7c;
+    font-size:10px;
+    text-transform:uppercase
+}
+
+.modalStat b{
+    font-size:20px
+}
+
+.modalActions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px
+}
+
+.modalActions button{
+    border:0;
+    border-radius:14px;
+    padding:13px;
+    font-weight:900;
+    color:#fff;
+    background:#ffffff0d;
+    border:1px solid #ffffff15;
+    cursor:pointer
+}
+
+.modalActions .primary{
+    background:linear-gradient(
+        135deg,
+        #17c964,
+        #00a878
+    )
+}
+
+@media(max-width:600px){
+
+    #app{
+        padding:10px
+    }
+
+    .card{
+        padding:16px
+    }
+
+    .intro h1{
+        font-size:36px
+    }
+
+    .intro .logo{
+        font-size:52px
+    }
+
+    .how{
+        grid-template-columns:1fr
+    }
+
+    .gameHeader{
+        align-items:flex-start
+    }
+
+    .gameTitle h1{
+        font-size:31px
+    }
+
+    .arena{
+        height:58vh;
+        min-height:400px
+    }
+
+    .top{
+        grid-template-columns:repeat(2,1fr)
+    }
+
+    .controls{
+        grid-template-columns:1fr 1fr
+    }
+
+    .controls button:first-child{
+        grid-column:1/-1
+    }
+
+    .modal{
+        padding:22px
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main id="app">
+
+<section class="card">
+
+<!-- ================= HOME ================= -->
+
+<div class="screen active" id="introScreen">
+
+<div class="intro">
+
+<div class="logo">☣️</div>
+
+<h1>VIRUS ESCAPE</h1>
+
+<p class="tagline">
+The outbreak has started. Your mission is simple:
+survive, collect coins, use power-ups, and escape every level.
+</p>
+
+<div class="objective">
+
+<b>🎯 YOUR MISSION</b>
+
+<br>
+
+<span>
+Survive for 30 seconds on each level without losing all 3 lives.
+Reach Level 20 and become the ultimate survivor.
+</span>
+
+</div>
+
+<div class="how">
+
+<div class="howCard">
+<div class="icon">🧑</div>
+<b>Move & Survive</b>
+<span>
+Use ← → or A / D to move.
+On mobile, swipe inside the game area.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">☠️</div>
+<b>Avoid Viruses</b>
+<span>
+Red viruses damage your lives.
+Lose all 3 lives and you must retry the level.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">🟡</div>
+<b>Collect Coins</b>
+<span>
+Coins increase your score.
+Consecutive collections create a combo bonus.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">⚡</div>
+<b>Grab Power-Ups</b>
+<span>
+Power-ups activate shield, magnet, speed,
+extra life and attack abilities.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">👹</div>
+<b>Watch for the Boss</b>
+<span>
+Boss battles appear on Levels 5, 10, 15 and 20.
+Press SPACE to attack the boss.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">💣</div>
+<b>Survive Hazards</b>
+<span>
+Later levels introduce bombs, lasers,
+moving barriers and unsafe zones.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">🏆</div>
+<b>Level Up</b>
+<span>
+Every completed 30-second level unlocks
+the next level. There are 20 levels.
+</span>
+</div>
+
+<div class="howCard">
+<div class="icon">🎵</div>
+<b>Game Audio</b>
+<span>
+Sounds play for coins, hits,
+bosses, power-ups and level completion.
+</span>
+</div>
+
+</div>
+
+<button class="introStart" id="openGame">
+🚀 START MISSION
+</button>
+
+<button class="leaderBtn" id="openLeaderboard">
+🏆 VIEW LEADERBOARD
+</button>
+
+<div class="leaderboard" id="leaderboard">
+
+<h2>🏆 TOP SURVIVORS</h2>
+
+<div id="leaderRows"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= GAME ================= -->
+
+<div class="screen" id="gameScreen">
+
+<div class="gameHeader">
+
+<div class="gameTitle">
+
+<h1>☣️ VIRUS ESCAPE</h1>
+
+<p class="sub">
+Survive the outbreak. Collect coins. Dodge the viruses.
+</p>
+
+</div>
+
+<span class="badge">
+SURVIVAL MODE
+</span>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="top">
+
+<div class="pill">
+<span>Score</span>
+<b id="score">0</b>
+</div>
+
+<div class="pill">
+<span>Best</span>
+<b id="best">0</b>
+</div>
+
+<div class="pill">
+<span>Lives</span>
+<b id="lives">❤️❤️❤️</b>
+</div>
+
+<div class="pill">
+<span>Level</span>
+<b id="level">1</b>
+</div>
+
+</div>
+
+
+<!-- GAME ARENA -->
+
+<div class="arena" id="arena">
+
+<div class="message" id="message">
+Press START and survive 30 seconds 🧬
+</div>
+
+
+<!-- PLAYER -->
+
+<div class="player" id="player"></div>
+
+<div class="shield" id="shield"></div>
+
+
+<!-- VIRUSES -->
+
+<div class="virus" id="v1"></div>
+
+<div class="virus" id="v2"></div>
+
+<div class="virus" id="v3"></div>
+
+
+<!-- COINS -->
+
+<div class="coin" id="c1"></div>
+
+<div class="coin" id="c2"></div>
+
+
+<!-- POWER -->
+
+<div class="power" id="power"></div>
+
+
+<!-- BOSS -->
+
+<div class="boss" id="boss"></div>
+
+</div>
+
+
+<!-- TIME BAR -->
+
+<div class="bar">
+
+<div class="fill" id="fill"></div>
+
+</div>
+
+
+<div class="result" id="result"></div>
+
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+<button class="primary" id="start">
+START ESCAPE
+</button>
+
+<button id="pause">
+⏸ PAUSE
+</button>
+
+<button id="reset">
+RESET
+</button>
+
+</div>
+
+
+<button class="controls button back" id="instructions">
+📖 HOW TO PLAY
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- ================= GAME OVER ================= -->
+
+<div class="overlay" id="gameOver">
+
+<div class="modal">
+
+<div class="big">
+💀
+</div>
+
+<h2>
+GAME OVER
+</h2>
+
+<p id="gameOverText">
+The virus outbreak got you.
+</p>
+
+<div class="modalStats">
+
+<div class="modalStat">
+
+<small>
+Score
+</small>
+
+<b id="overScore">
+0
+</b>
+
+</div>
+
+<div class="modalStat">
+
+<small>
+Level
+</small>
+
+<b id="overLevel">
+1
+</b>
+
+</div>
+
+</div>
+
+<div class="modalActions">
+
+<button class="primary" id="retry">
+↩️ RETRY LEVEL
+</button>
+
+<button id="overHome">
+🏠 HOME
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= LEVEL COMPLETE ================= -->
+
+<div class="overlay" id="levelComplete">
+
+<div class="modal">
+
+<div class="big">
+🏆
+</div>
+
+<h2 id="completeTitle">
+LEVEL COMPLETE!
+</h2>
+
+<p id="completeText">
+You survived the outbreak.
+</p>
+
+<div class="modalStats">
+
+<div class="modalStat">
+
+<small>
+Score
+</small>
+
+<b id="completeScore">
+0
+</b>
+
+</div>
+
+<div class="modalStat">
+
+<small>
+Next Level
+</small>
+
+<b id="nextLevel">
+2
+</b>
+
+</div>
+
+</div>
+
+<div class="modalActions">
+
+<button class="primary" id="next">
+🚀 NEXT LEVEL
+</button>
+
+<button id="completeHome">
+🏠 HOME
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+
+/* ================= GAME VARIABLES ================= */
+
+let score = 0;
+
+let best = Number(
+    localStorage.virusBest || 0
+);
+
+let lives = 3;
+
+let level = Number(
+    localStorage.virusUnlocked || 1
+);
+
+let time = 30;
+
+let running = false;
+
+let paused = false;
+
+let x = 0;
+
+let raf = null;
+
+let timer = null;
+
+
+/* POWER-UPS */
+
+let shield = false;
+
+let magnet = false;
+
+let speedBoost = false;
+
+let extraLife = false;
+
+let attackPower = false;
+
+
+/* SCORE */
+
+let combo = 0;
+
+
+/* BOSS */
+
+let bossHp = 0;
+
+let bossMaxHp = 0;
+
+let shotCooldown = 0;
+
+let hazardFrame = 0;
+
+let bossAttackFrame = 0;
+
+
+/* ================= AUDIO ================= */
+
+let audioCtx = null;
+
+
+function beep(
+    freq,
+    duration = .08,
+    type = 'sine'
+){
+
+    try{
+
+        audioCtx =
+            audioCtx ||
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+        let o =
+            audioCtx.createOscillator();
+
+        let g =
+            audioCtx.createGain();
+
+        o.type = type;
+
+        o.frequency.value = freq;
+
+        g.gain.setValueAtTime(
+            .04,
+            audioCtx.currentTime
+        );
+
+        g.gain.exponentialRampToValueAtTime(
+            .001,
+            audioCtx.currentTime + duration
+        );
+
+        o.connect(g);
+
+        g.connect(audioCtx.destination);
+
+        o.start();
+
+        o.stop(
+            audioCtx.currentTime + duration
+        );
+
+    }catch(e){}
+
+}
+
+
+function sound(kind){
+
+    if(kind === 'coin'){
+
+        beep(
+            880,
+            .08
+        );
+
+    }
+
+    else if(kind === 'hit'){
+
+        beep(
+            150,
+            .16,
+            'sawtooth'
+        );
+
+    }
+
+    else if(kind === 'boss'){
+
+        beep(
+            90,
+            .25,
+            'square'
+        );
+
+    }
+
+    else if(kind === 'power'){
+
+        beep(
+            660,
+            .12
+        );
+
+    }
+
+    else if(kind === 'level'){
+
+        beep(
+            660,
+            .1
+        );
+
+        setTimeout(
+            () => beep(990,.16),
+            100
+        );
+
+    }
+
+}
+
+
+/* ================= SAVE PROGRESS ================= */
+
+function saveProgress(){
+
+    localStorage.virusUnlocked =
+        Math.max(
+            Number(
+                localStorage.virusUnlocked || 1
+            ),
+            Math.min(
+                20,
+                level + 1
+            )
+        );
+
+}
+
+
+/* ================= GAME OBJECTS ================= */
+
+const viruses = [
+
+    $('v1'),
+
+    $('v2'),
+
+    $('v3')
+
+];
+
+
+const coins = [
+
+    $('c1'),
+
+    $('c2')
+
+];
+
+
+let vy = [
+
+    0,
+    0,
+    0
+
+];
+
+
+let cy = [
+
+    0,
+    0
+
+];
+
+
+let phase = [
+
+    0,
+    0,
+    0
+
+];
+
+
+/* ================= LEADERBOARD ================= */
+
+function getBoard(){
+
+    return JSON.parse(
+        localStorage.virusLeaderboard || '[]'
+    );
+
+}
+
+
+function saveScore(){
+
+    let board =
+        getBoard();
+
+    board.push({
+
+        score:score,
+
+        level:level,
+
+        date:new Date()
+            .toLocaleDateString()
+
+    });
+
+
+    board.sort(
+        (a,b) =>
+            b.score - a.score
+    );
+
+
+    localStorage.virusLeaderboard =
+        JSON.stringify(
+            board.slice(0,5)
+        );
+
+
+    renderBoard();
+
+}
+
+
+function renderBoard(){
+
+    let board =
+        getBoard();
+
+
+    $('leaderRows').innerHTML =
+        board.length
+
+        ?
+
+        board.map(
+            (r,i) =>
+
+            '<div class="rank">' +
+
+            '<strong>#' +
+            (i+1) +
+            '</strong>' +
+
+            '<span>' +
+            'Level ' +
+            r.level +
+            ' • ' +
+            r.date +
+            '</span>' +
+
+            '<strong>' +
+            r.score +
+            '</strong>' +
+
+            '</div>'
+
+        ).join('')
+
+        :
+
+        '<div class="rank">' +
+
+        '<span>No scores yet</span>' +
+
+        '<strong>—</strong>' +
+
+        '</div>';
+
+}
+
+
+/* ================= POSITION ================= */
+
+function pos(
+    el,
+    x,
+    y
+){
+
+    el.style.left =
+        x + 'px';
+
+    el.style.top =
+        y + 'px';
+
+    el.style.display =
+        'block';
+
+}
+
+
+/* ================= BOSS LEVEL ================= */
+
+function isBossLevel(){
+
+    return level % 5 === 0;
+
+}
+
+
+/* ================= DIFFICULTY ================= */
+
+function getDifficulty(){
+
+    return {
+
+        enemyCount:
+            Math.min(
+                3,
+                1 + Math.ceil(level / 3)
+            ),
+
+        enemySpeed:
+            1.8 + level * .32,
+
+        coinSpeed:
+            1.7 + level * .12,
+
+        zigzag:
+            level >= 4,
+
+        boss:
+            isBossLevel(),
+
+        bossHp:
+            level >= 5
+                ? 3 + Math.floor(level * .8)
+                : 0
+
+    };
+
+}
+
+
+/* ================= SPAWN ================= */
+
+function spawn(){
+
+    const a =
+        $('arena');
+
+    const d =
+        getDifficulty();
+
+
+    /* VIRUSES */
+
+    for(
+        let i = 0;
+        i < 3;
+        i++
+    ){
+
+        if(i < d.enemyCount){
+
+            pos(
+                viruses[i],
+
+                Math.random() *
+                (a.clientWidth - 40),
+
+                -60 -
+                Math.random() *
+                a.clientHeight
+            );
+
+
+            vy[i] =
+                d.enemySpeed +
+                Math.random() * 1.6;
+
+
+            phase[i] =
+                Math.random() *
+                Math.PI * 2;
+
+
+            /*
+            VIRUS TYPES
+            */
+
+            viruses[i].dataset.type =
+
+                i === 1 &&
+                level >= 3
+
+                    ? 'fast'
+
+                    :
+
+                i === 2 &&
+                level >= 7
+
+                    ? 'chaser'
+
+                    :
+
+                    'normal';
+
+        }
+
+        else{
+
+            viruses[i].style.display =
+                'none';
+
+        }
+
+    }
+
+
+    /* COINS */
+
+    for(
+        let i = 0;
+        i < 2;
+        i++
+    ){
+
+        pos(
+            coins[i],
+
+            Math.random() *
+            (a.clientWidth - 30),
+
+            -50 -
+            Math.random() *
+            a.clientHeight
+        );
+
+
+        cy[i] =
+            d.coinSpeed;
+
+    }
+
+
+    /* POWER */
+
+    pos(
+        $('power'),
+
+        Math.random() *
+        (a.clientWidth - 35),
+
+        -400
+    );
+
+
+    /* BOSS */
+
+    if(d.boss){
+
+        pos(
+            $('boss'),
+
+            Math.random() *
+            (a.clientWidth - 80),
+
+            -100
+        );
+
+
+        bossMaxHp =
+            d.bossHp;
+
+        bossHp =
+            bossMaxHp;
+
+
+        sound('boss');
+
+    }
+
+    else{
+
+        $('boss').style.display =
+            'none';
+
+    }
+
+}
+
+
+/* ================= COLLISION ================= */
+
+function hit(
+    a,
+    b,
+    sizeA,
+    sizeB
+){
+
+    return (
+
+        Math.abs(a.x - b.x) <
+        (sizeA + sizeB) / 2
+
+        &&
+
+        Math.abs(a.y - b.y) <
+        (sizeA + sizeB) / 2
+
+    );
+
+}
+
+
+/* ================= UPDATE GAME ================= */
+
+function update(){
+
+    if(
+        !running ||
+        paused
+    ){
+
+        return;
+
+    }
+
+
+    const a =
+        $('arena');
+
+    const d =
+        getDifficulty();
+
+    const now =
+        performance.now();
+
+
+    x =
+        Math.max(
+            0,
+            Math.min(
+                a.clientWidth - 30,
+                x
+            )
+        );
+
+
+    const py =
+        a.clientHeight - 48;
+
+
+    /* PLAYER */
+
+    $('player').style.left =
+        x + 'px';
+
+    $('player').style.top =
+        py + 'px';
+
+
+    /* SHIELD */
+
+    $('shield').style.left =
+        (x - 9) + 'px';
+
+    $('shield').style.top =
+        (py - 9) + 'px';
+
+
+    $('shield').style.display =
+        shield
+            ? 'block'
+            : 'none';
+
+
+    /* ================= VIRUSES ================= */
+
+    viruses.forEach(
+        (v,i) => {
+
+            if(
+                v.style.display === 'none'
+            ){
+
+                return;
+
+            }
+
+
+            let speed =
+                vy[i] *
+                (
+                    speedBoost
+                        ? 1.7
+                        : 1
+                );
+
+
+            let y =
+                parseFloat(
+                    v.style.top
+                ) + speed;
+
+
+            let xx =
+                parseFloat(
+                    v.style.left
+                );
+
+
+            /*
+            CHASING VIRUS
+            */
+
+            if(
+                v.dataset.type ===
+                'chaser'
+            ){
+
+                xx +=
+                    (
+                        x - xx
+                    ) * .012;
+
+            }
+
+
+            /*
+            ZIGZAG
+            */
+
+            if(d.zigzag){
+
+                xx +=
+                    Math.sin(
+                        now / 350 +
+                        phase[i]
+                    ) *
+                    (
+                        1.2 +
+                        level * .12
+                    );
+
+            }
+
+
+            /*
+            RESET
+            */
+
+            if(
+                y >
+                a.clientHeight + 20
+            ){
+
+                y = -50;
+
+                xx =
+                    Math.random() *
+                    (a.clientWidth - 40);
+
+                combo = 0;
+
+            }
+
+
+            xx =
+                Math.max(
+                    0,
+                    Math.min(
+                        a.clientWidth - 40,
+                        xx
+                    )
+                );
+
+
+            v.style.top =
+                y + 'px';
+
+            v.style.left =
+                xx + 'px';
+
+
+            /*
+            PLAYER COLLISION
+            */
+
+            if(
+                hit(
+                    {
+                        x:x + 15,
+                        y:py + 15
+                    },
+                    {
+                        x:xx + 17,
+                        y:y + 17
+                    },
+                    30,
+                    34
+                )
+            ){
+
+                if(shield){
+
+                    shield =
+                        false;
+
+                    score +=
+                        10;
+
+                    sound('hit');
+
+                }
+
+                else{
+
+                    lives--;
+
+                    combo = 0;
+
+                    sound('hit');
+
+                }
+
+
+                v.style.top =
+                    '-60px';
+
+
+                if(
+                    lives <= 0
+                ){
+
+                    end(
+                        '💀 You got infected!'
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ================= COINS ================= */
+
+    coins.forEach(
+        (c,i) => {
+
+            let y =
+                parseFloat(
+                    c.style.top
+                ) +
+
+                cy[i] *
+                (
+                    speedBoost
+                        ? 1.7
+                        : 1
+                );
+
+
+            let xx =
+                parseFloat(
+                    c.style.left
+                );
+
+
+            /*
+            MAGNET
+            */
+
+            if(magnet){
+
+                xx +=
+                    (
+                        x - xx
+                    ) * .06;
+
+            }
+
+
+            if(
+                y >
+                a.clientHeight + 20
+            ){
+
+                y = -30;
+
+                xx =
+                    Math.random() *
+                    (a.clientWidth - 30);
+
+            }
+
+
+            c.style.top =
+                y + 'px';
+
+            c.style.left =
+                xx + 'px';
+
+
+            /*
+            COIN COLLISION
+            */
+
+            if(
+                hit(
+                    {
+                        x:x + 15,
+                        y:py + 15
+                    },
+                    {
+                        x:xx + 12,
+                        y:y + 12
+                    },
+                    30,
+                    25
+                )
+            ){
+
+                combo++;
+
+                score +=
+                    25 +
+                    combo * 5;
+
+                c.style.top =
+                    '-40px';
+
+                sound('coin');
+
+            }
+
+        }
+    );
+
+
+    /* ================= POWER-UP ================= */
+
+    let p =
+        $('power');
+
+
+    let pyy =
+        parseFloat(
+            p.style.top
+        ) +
+
+        2 +
+        level * .12;
+
+
+    if(
+        p.style.display ===
+        'block'
+    ){
+
+        p.style.top =
+            pyy + 'px';
+
+
+        if(
+            pyy >
+            a.clientHeight + 20
+        ){
+
+            p.style.top =
+                '-500px';
+
+        }
+
+
+        if(
+            hit(
+                {
+                    x:x + 15,
+                    y:py + 15
+                },
+                {
+                    x:
+                        parseFloat(
+                            p.style.left
+                        ) + 14,
+
+                    y:
+                        pyy + 14
+                },
+                30,
+                28
+            )
+        ){
+
+            /*
+            RANDOM POWER-UP
+            */
+
+            let type =
+                [
+                    'shield',
+                    'magnet',
+                    'speed',
+                    'life',
+                    'attack'
+                ][
+                    Math.floor(
+                        Math.random() * 5
+                    )
+                ];
+
+
+            if(
+                type === 'shield'
+            ){
+
+                shield =
+                    true;
+
+            }
+
+
+            if(
+                type === 'magnet'
+            ){
+
+                magnet =
+                    true;
+
+            }
+
+
+            if(
+                type === 'speed'
+            ){
+
+                speedBoost =
+                    true;
+
+            }
+
+
+            if(
+                type === 'attack'
+            ){
+
+                attackPower =
+                    true;
+
+            }
+
+
+            if(
+                type === 'life'
+            ){
+
+                lives =
+                    Math.min(
+                        3,
+                        lives + 1
+                    );
+
+            }
+
+
+            score +=
+                50;
+
+
+            p.style.display =
+                'none';
+
+
+            sound('power');
+
+
+            setTimeout(
+                () => {
+
+                    if(
+                        type ===
+                        'magnet'
+                    ){
+
+                        magnet =
+                            false;
+
+                    }
+
+
+                    if(
+                        type ===
+                        'speed'
+                    ){
+
+                        speedBoost =
+                            false;
+
+                    }
+
+
+                    if(
+                        type ===
+                        'attack'
+                    ){
+
+                        attackPower =
+                            false;
+
+                    }
+
+                },
+                Math.max(
+                    3000,
+                    7000 -
+                    level * 150
+                )
+            );
+
+        }
+
+    }
+
+
+    /* ================= BOSS ================= */
+
+    if(d.boss){
+
+        let b =
+            $('boss');
+
+
+        if(
+            bossHp > 0
+        ){
+
+            b.style.display =
+                'block';
+
+
+            let by =
+                parseFloat(
+                    b.style.top
+                ) +
+
+                (
+                    1.1 +
+                    level * .09
+                );
+
+
+            let bx =
+                parseFloat(
+                    b.style.left
+                );
+
+
+            /*
+            BOSS TRACKS PLAYER
+            */
+
+            bx +=
+                (
+                    x - bx
+                ) *
+
+                (
+                    .004 +
+                    level * .0004
+                );
+
+
+            b.style.left =
+                bx + 'px';
+
+            b.style.top =
+                by + 'px';
+
+
+            $('result').textContent =
+
+                '👹 BOSS HP: ' +
+                bossHp +
+                '/' +
+                bossMaxHp +
+                ' • SPACE = ATTACK' +
+
+                (
+                    attackPower
+                        ? ' • 💥 POWER'
+                        : ''
+                );
+
+
+            /*
+            BOSS ATTACK
+            */
+
+            bossAttackFrame++;
+
+
+            if(
+                bossAttackFrame >
+                100
+            ){
+
+                bossAttackFrame =
+                    0;
+
+
+                if(shield){
+
+                    shield =
+                        false;
+
+                }
+
+                else{
+
+                    lives--;
+
+                }
+
+
+                sound('boss');
+
+            }
+
+
+            /*
+            BOSS LEAVES SCREEN
+            */
+
+            if(
+                by >
+                a.clientHeight + 20
+            ){
+
+                bossHp--;
+
+            }
+
+
+            /*
+            BOSS COLLISION
+            */
+
+            if(
+                hit(
+                    {
+                        x:x + 15,
+                        y:py + 15
+                    },
+                    {
+                        x:bx + 35,
+                        y:by + 35
+                    },
+                    30,
+                    70
+                )
+                &&
+                !shield
+            ){
+
+                lives = 0;
+
+            }
+
+
+            if(
+                lives <= 0
+            ){
+
+                end(
+                    '👹 THE BOSS GOT YOU!'
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* ================= BOMB HAZARD ================= */
+
+    if(
+        level >= 6
+    ){
+
+        hazardFrame++;
+
+
+        if(
+            hazardFrame % 2 === 0
+        ){
+
+            let bombX =
+                (
+                    a.clientWidth - 35
+                ) *
+                (
+                    .5 +
+                    .5 *
+                    Math.sin(
+                        now / 650
+                    )
+                );
+
+
+            let bombY =
+                (
+                    now / 7
+                ) %
+                (
+                    a.clientHeight + 80
+                ) - 80;
+
+
+            if(
+                hit(
+                    {
+                        x:x + 15,
+                        y:py + 15
+                    },
+                    {
+                        x:bombX + 17,
+                        y:bombY + 17
+                    },
+                    30,
+                    34
+                )
+            ){
+
+                if(shield){
+
+                    shield =
+                        false;
+
+                }
+
+                else{
+
+                    lives--;
+
+                }
+
+                sound('hit');
+
+            }
+
+        }
+
+    }
+
+
+    /* ================= LASER ================= */
+
+    if(
+        level >= 8
+    ){
+
+        let laserX =
+            a.clientWidth * .5 +
+
+            Math.sin(
+                now / 500
+            ) *
+
+            a.clientWidth *
+            .35;
+
+
+        if(
+            Math.abs(
+                x - laserX
+            ) < 28
+        ){
+
+            if(shield){
+
+                shield =
+                    false;
+
+            }
+
+            else{
+
+                lives--;
+
+            }
+
+        }
+
+    }
+
+
+    /* ================= MOVING BARRIER ================= */
+
+    if(
+        level >= 10
+    ){
+
+        let barrierX =
+            (
+                a.clientWidth - 160
+            ) *
+
+            (
+                .5 +
+                .5 *
+                Math.sin(
+                    now / 900
+                )
+            );
+
+
+        if(
+            Math.abs(
+                (x + 15) -
+                (
+                    barrierX + 80
+                )
+            ) < 95
+        ){
+
+            score =
+                Math.max(
+                    0,
+                    score - 1
+                );
+
+        }
+
+    }
+
+
+    /* ================= UNSAFE ZONE ================= */
+
+    if(
+        level >= 12
+    ){
+
+        if(
+            Math.floor(
+                now / 800
+            ) % 2 === 0
+
+            &&
+
+            x <
+            a.clientWidth * .35
+        ){
+
+            if(!shield){
+
+                lives--;
+
+            }
+
+        }
+
+    }
+
+
+    if(
+        lives <= 0
+    ){
+
+        end(
+            '💀 The hazards overwhelmed you!'
+        );
+
+    }
+
+
+    if(
+        shotCooldown > 0
+    ){
+
+        shotCooldown--;
+
+    }
+
+
+    render();
+
+
+    raf =
+        requestAnimationFrame(
+            update
+        );
+
+}
+
+
+/* ================= RENDER ================= */
+
+function render(){
+
+    $('score').textContent =
+        score;
+
+
+    $('best').textContent =
+        best;
+
+
+    $('lives').textContent =
+        '❤️'.repeat(lives) +
+        '🖤'.repeat(3-lives);
+
+
+    $('level').textContent =
+        level;
+
+
+    $('fill').style.width =
+        Math.max(
+            0,
+            time / 30 * 100
+        ) + '%';
+
+
+    if(
+        !isBossLevel()
+    ){
+
+        $('result').textContent =
+
+            (
+                combo > 1
+                    ? '🔥 ' +
+                      combo +
+                      'x combo '
+                    : ''
+            )
+
+            +
+
+            (
+                shield
+                    ? '• 🛡️ Shield '
+                    : ''
+            )
+
+            +
+
+            (
+                magnet
+                    ? '• 🧲 Magnet '
+                    : ''
+            )
+
+            +
+
+            (
+                speedBoost
+                    ? '• ⚡ Speed '
+                    : ''
+            )
+
+            +
+
+            (
+                attackPower
+                    ? '• 💥 Attack'
+                    : ''
+            );
+
+    }
+
+}
+
+
+/* ================= HIDE OBJECTS ================= */
+
+function hideObjects(){
+
+    viruses.concat(
+        coins
+    ).forEach(
+        e =>
+            e.style.display =
+                'none'
+    );
+
+
+    $('power').style.display =
+        'none';
+
+
+    $('boss').style.display =
+        'none';
+
+
+    $('player').style.display =
+        'none';
+
+
+    $('shield').style.display =
+        'none';
+
+}
+
+
+/* ================= END GAME ================= */
+
+function end(msg){
+
+    running =
+        false;
+
+    paused =
+        false;
+
+
+    cancelAnimationFrame(
+        raf
+    );
+
+
+    clearInterval(
+        timer
+    );
+
+
+    hideObjects();
+
+
+    /*
+    LEVEL COMPLETE
+    */
+
+    if(
+        msg.indexOf(
+            'COMPLETE'
+        ) !== -1
+    ){
+
+        saveScore();
+
+
+        if(
+            level < 20
+        ){
+
+            $('completeTitle').textContent =
+                'LEVEL ' +
+                level +
+                ' COMPLETE!';
+
+
+            $('completeText').textContent =
+                'Amazing! You survived this level and unlocked Level ' +
+                (level + 1) +
+                '.';
+
+
+            $('completeScore').textContent =
+                score;
+
+
+            $('nextLevel').textContent =
+                level + 1;
+
+
+            $('next').textContent =
+                '🚀 NEXT LEVEL';
+
+
+            $('levelComplete')
+                .classList
+                .add('show');
+
+        }
+
+        else{
+
+            $('completeTitle').textContent =
+                'ALL 20 LEVELS COMPLETE!';
+
+
+            $('completeText').textContent =
+                '🎉 You conquered all 20 levels! Your final score is ' +
+                score +
+                '.';
+
+
+            $('completeScore').textContent =
+                score;
+
+
+            $('nextLevel').textContent =
+                '🏆';
+
+
+            $('next').textContent =
+                'PLAY AGAIN';
+
+
+            $('levelComplete')
+                .classList
+                .add('show');
+
+        }
+
+    }
+
+
+    /*
+    GAME OVER
+    */
+
+    else{
+
+        saveScore();
+
+
+        $('gameOverText').textContent =
+            msg +
+            ' Retry Level ' +
+            level +
+            ' and try to beat your score.';
+
+
+        $('overScore').textContent =
+            score;
+
+
+        $('overLevel').textContent =
+            level;
+
+
+        $('gameOver')
+            .classList
+            .add('show');
+
+    }
+
+
+    /*
+    BEST SCORE
+    */
+
+    if(
+        score > best
+    ){
+
+        best =
+            score;
+
+        localStorage.virusBest =
+            best;
+
+    }
+
+
+    $('best').textContent =
+        best;
+
+
+    renderBoard();
+
+}
+
+
+/* ================= START GAME ================= */
+
+function startGame(
+    nextLevel = false
+){
+
+    clearInterval(
+        timer
+    );
+
+
+    cancelAnimationFrame(
+        raf
+    );
+
+
+    if(nextLevel){
+
+        level++;
+
+        saveProgress();
+
+    }
+
+
+    running =
+        true;
+
+
+    paused =
+        false;
+
+
+    lives =
+        3;
+
+
+    time =
+        30;
+
+
+    x =
+        $('arena').clientWidth / 2;
+
+
+    shield =
+        false;
+
+
+    magnet =
+        false;
+
+
+    speedBoost =
+        false;
+
+
+    attackPower =
+        false;
+
+
+    combo =
+        0;
+
+
+    bossAttackFrame =
+        0;
+
+
+    shotCooldown =
+        0;
+
+
+    bossHp =
+        getDifficulty().bossHp;
+
+
+    $('result').textContent =
+        '';
+
+
+    $('message').style.display =
+        'none';
+
+
+    $('player').style.display =
+        'block';
+
+
+    $('start').textContent =
+        'RESTART LEVEL';
+
+
+    $('pause').textContent =
+        '⏸ PAUSE';
+
+
+    spawn();
+
+
+    render();
+
+
+    raf =
+        requestAnimationFrame(
+            update
+        );
+
+
+    timer =
+        setInterval(
+            () => {
+
+                if(!paused){
+
+                    time--;
+
+
+                    /*
+                    POWER-UP APPEARS
+                    */
+
+                    if(
+                        time === 20 ||
+                        time === 10
+                    ){
+
+                        $('power')
+                            .style.display =
+                            'block';
+
+
+                        $('power')
+                            .style.left =
+
+                            Math.random() *
+                            (
+                                $('arena')
+                                    .clientWidth -
+                                35
+                            ) +
+                            'px';
+
+                    }
+
+
+                    /*
+                    LEVEL COMPLETE
+                    */
+
+                    if(
+                        time <= 0
+                    ){
+
+                        score +=
+                            100 +
+                            level * 25;
+
+
+                        sound(
+                            'level'
+                        );
+
+
+                        saveProgress();
+
+
+                        end(
+                            '🎉 LEVEL ' +
+                            level +
+                            ' COMPLETE!'
+                        );
+
+                    }
+
+
+                    render();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* ================= START BUTTON ================= */
+
+$('start').onclick =
+    () => {
+
+        if(running){
+
+            return;
+
+        }
+
+
+        startGame(false);
+
+    };
+
+
+/* ================= PAUSE ================= */
+
+$('pause').onclick =
+    () => {
+
+        if(!running){
+
+            return;
+
+        }
+
+
+        paused =
+            !paused;
+
+
+        $('pause').textContent =
+            paused
+                ? '▶ RESUME'
+                : '⏸ PAUSE';
+
+
+        $('message').textContent =
+            paused
+                ? '⏸ GAME PAUSED'
+                : '';
+
+
+        $('message').style.display =
+            paused
+                ? 'grid'
+                : 'none';
+
+
+        if(!paused){
+
+            raf =
+                requestAnimationFrame(
+                    update
+                );
+
+        }
+
+    };
+
+
+/* ================= KEYBOARD ================= */
+
+window.addEventListener(
+    'keydown',
+    e => {
+
+        /*
+        SPACE
+        */
+
+        if(
+            e.key === ' '
+        ){
+
+            e.preventDefault();
+
+
+            /*
+            BOSS ATTACK
+            */
+
+            if(
+                running &&
+                !paused &&
+                isBossLevel()
+            ){
+
+                if(
+                    shotCooldown <= 0
+                ){
+
+                    shotCooldown =
+                        12;
+
+
+                    let damage =
+                        attackPower
+                            ? 2
+                            : 1;
+
+
+                    bossHp =
+                        Math.max(
+                            0,
+                            bossHp -
+                            damage
+                        );
+
+
+                    score +=
+                        damage * 75;
+
+
+                    beep(
+                        520,
+                        .06
+                    );
+
+
+                    /*
+                    BOSS DEFEATED
+                    */
+
+                    if(
+                        bossHp <= 0
+                    ){
+
+                        score +=
+                            500 +
+                            level * 50;
+
+
+                        $('boss')
+                            .style.display =
+                            'none';
+
+
+                        sound(
+                            'level'
+                        );
+
+                    }
+
+                }
+
+            }
+
+            else{
+
+                $('pause').click();
+
+            }
+
+
+            return;
+
+        }
+
+
+        if(
+            !running ||
+            paused
+        ){
+
+            return;
+
+        }
+
+
+        /*
+        LEFT
+        */
+
+        if(
+            e.key === 'ArrowLeft' ||
+            e.key.toLowerCase() === 'a'
+        ){
+
+            x -=
+                speedBoost
+                    ? 65
+                    : 40;
+
+        }
+
+
+        /*
+        RIGHT
+        */
+
+        if(
+            e.key === 'ArrowRight' ||
+            e.key.toLowerCase() === 'd'
+        ){
+
+            x +=
+                speedBoost
+                    ? 65
+                    : 40;
+
+        }
+
+
+        e.preventDefault();
+
+    }
+);
+
+
+/* ================= TOUCH CONTROL ================= */
+
+let touchX = null;
+
+
+$('arena').addEventListener(
+    'touchstart',
+    e => {
+
+        touchX =
+            e.touches[0].clientX;
+
+    }
+);
+
+
+$('arena').addEventListener(
+    'touchmove',
+    e => {
+
+        if(
+            !running ||
+            paused
+        ){
+
+            return;
+
+        }
+
+
+        let nx =
+            e.touches[0].clientX;
+
+
+        if(
+            touchX !== null
+        ){
+
+            x +=
+                nx - touchX;
+
+
+            touchX =
+                nx;
+
+        }
+
+    }
+);
+
+
+/* ================= RESET ================= */
+
+$('reset').onclick =
+    () => {
+
+        running =
+            false;
+
+
+        paused =
+            false;
+
+
+        cancelAnimationFrame(
+            raf
+        );
+
+
+        clearInterval(
+            timer
+        );
+
+
+        raf =
+            null;
+
+
+        timer =
+            null;
+
+
+        score =
+            0;
+
+
+        lives =
+            3;
+
+
+        level =
+            1;
+
+
+        localStorage.virusUnlocked =
+            1;
+
+
+        time =
+            30;
+
+
+        shield =
+            false;
+
+
+        magnet =
+            false;
+
+
+        speedBoost =
+            false;
+
+
+        attackPower =
+            false;
+
+
+        combo =
+            0;
+
+
+        bossHp =
+            3;
+
+
+        $('message').textContent =
+            'Press START ESCAPE and survive 30 seconds 🧬';
+
+
+        $('message').style.display =
+            'grid';
+
+
+        $('result').textContent =
+            'Ready for Level 1';
+
+
+        $('start').textContent =
+            'START ESCAPE';
+
+
+        $('pause').textContent =
+            '⏸ PAUSE';
+
+
+        hideObjects();
+
+
+        render();
+
+    };
+
+
+/* ================= RETRY ================= */
+
+$('retry').onclick =
+    () => {
+
+        $('gameOver')
+            .classList
+            .remove('show');
+
+
+        startGame(false);
+
+    };
+
+
+/* ================= NEXT LEVEL ================= */
+
+$('next').onclick =
+    () => {
+
+        if(
+            level >= 20
+        ){
+
+            $('levelComplete')
+                .classList
+                .remove('show');
+
+
+            score =
+                0;
+
+
+            level =
+                1;
+
+
+            startGame(false);
+
+        }
+
+        else{
+
+            $('levelComplete')
+                .classList
+                .remove('show');
+
+
+            startGame(true);
+
+        }
+
+    };
+
+
+/* ================= HOME ================= */
+
+$('overHome').onclick =
+    () => {
+
+        $('gameOver')
+            .classList
+            .remove('show');
+
+
+        goHome();
+
+    };
+
+
+$('completeHome').onclick =
+    () => {
+
+        $('levelComplete')
+            .classList
+            .remove('show');
+
+
+        goHome();
+
+    };
+
+
+function goHome(){
+
+    running =
+        false;
+
+
+    paused =
+        false;
+
+
+    clearInterval(
+        timer
+    );
+
+
+    cancelAnimationFrame(
+        raf
+    );
+
+
+    hideObjects();
+
+
+    $('gameScreen')
+        .classList
+        .remove('active');
+
+
+    $('introScreen')
+        .classList
+        .add('active');
+
+
+    renderBoard();
+
+}
+
+
+/* ================= START MISSION SCREEN ================= */
+
+function startMissionScreen(){
+
+    if(running){
+
+        return;
+
+    }
+
+
+    $('introScreen')
+        .classList
+        .remove('active');
+
+
+    $('gameScreen')
+        .classList
+        .add('active');
+
+
+    $('message').textContent =
+        'Press START ESCAPE and survive 30 seconds 🧬';
+
+
+    $('message').style.display =
+        'grid';
+
+
+    $('result').textContent =
+        'Ready for Level 1';
+
+}
+
+
+/* ================= INITIALIZE ================= */
+
+render();
+
+renderBoard();
+
+
+$('openGame').onclick =
+    startMissionScreen;
+
+
+$('openLeaderboard').onclick =
+    () => {
+
+        renderBoard();
+
+
+        $('leaderboard')
+            .scrollIntoView({
+                behavior:'smooth',
+                block:'center'
+            });
+
+    };
+
+
+$('instructions').onclick =
+    () => {
+
+        if(running){
+
+            return;
+
+        }
+
+
+        $('gameScreen')
+            .classList
+            .remove('active');
+
+
+        $('introScreen')
+            .classList
+            .add('active');
+
+
+        renderBoard();
+
+    };
+
+</script>
+
+</body>
+</html>

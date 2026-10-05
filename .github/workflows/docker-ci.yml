@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ksamiksha/virusescape:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/virusescape:latest .
 
       - name: Push Docker image
-        run: docker push ksamiksha/virusescape:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/virusescape:latest
